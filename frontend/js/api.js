@@ -1,4 +1,6 @@
-const API_BASE = 'http://127.0.0.1:8000/api'
+// Set window.MFIS_API_BASE in your HTML before loading this script to override.
+// For Vercel deployment, this will point to the Render backend URL.
+const API_BASE = window.MFIS_API_BASE || '/api'
 
 export async function fetchCases(){
   const res = await fetch(`${API_BASE}/cases/`)

@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -28,18 +29,21 @@ app.include_router(analysis.router, prefix='/api')
 app.include_router(timeline.router, prefix='/api')
 app.include_router(reports.router, prefix='/api')
 
-FRONTEND_DIR = Path(__file__).resolve().parent.parent / 'frontend'
-app.mount('/css', StaticFiles(directory=str(FRONTEND_DIR / 'css')), name='css')
-app.mount('/js', StaticFiles(directory=str(FRONTEND_DIR / 'js')), name='js')
-app.mount('/pages', StaticFiles(directory=str(FRONTEND_DIR / 'pages')), name='pages')
-
 @app.get('/')
 def root():
     return {'status': 'MFIS backend running'}
 
-@app.get('/frontend/{path:path}')
-def frontend_file(path: str):
-    file_path = FRONTEND_DIR / path
-    if file_path.is_file():
-        return FileResponse(file_path)
-    return FileResponse(FRONTEND_DIR / 'index.html')
+# Serve frontend static files only in local development
+FRONTEND_DIR = Path(__file__).resolve().parent.parent / 'frontend'
+if FRONTEND_DIR.exists():
+    app.mount('/css', StaticFiles(directory=str(FRONTEND_DIR / 'css')), name='css')
+    app.mount('/js', StaticFiles(directory=str(FRONTEND_DIR / 'js')), name='js')
+    app.mount('/pages', StaticFiles(directory=str(FRONTEND_DIR / 'pages')), name='pages')
+
+    @app.get('/frontend/{path:path}')
+    def frontend_file(path: str):
+        file_path = FRONTEND_DIR / path
+        if file_path.is_file():
+            return FileResponse(file_path)
+        return FileResponse(FRONTEND_DIR / 'index.html')
+
