@@ -1,17 +1,24 @@
 {
-  "outputDirectory": "frontend",
   "rewrites": [
+    {
+      "source": "/",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/css/(.*)",
+      "destination": "/frontend/css/$1"
+    },
+    {
+      "source": "/js/(.*)",
+      "destination": "/frontend/js/$1"
+    },
+    {
+      "source": "/pages/(.*)",
+      "destination": "/frontend/pages/$1"
+    },
     {
       "source": "/api/(.*)",
       "destination": "https://msf-1-9fse.onrender.com/api/$1"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" }
-      ]
     }
   ]
 }
