@@ -1,6 +1,5 @@
-// Set window.MFIS_API_BASE in your HTML before loading this script to override.
-// For Vercel deployment, this will point to the Render backend URL.
-const API_BASE = window.MFIS_API_BASE || '/api'
+// Live Render backend URL
+const API_BASE = window.MFIS_API_BASE || 'https://msf-1-9fse.onrender.com/api'
 
 export async function fetchCases(){
   const res = await fetch(`${API_BASE}/cases/`)
